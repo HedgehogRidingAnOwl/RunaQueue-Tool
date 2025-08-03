@@ -51,8 +51,10 @@ function createPopoutWindow(): void {
     popoutWindow = new BrowserWindow({
         width: 400,
         height: 600,
+        autoHideMenuBar: true,
         transparent: true,
         frame: false,
+        hasShadow: false,
         webPreferences: {
             preload: join(__dirname, "../preload/index.js"),
             sandbox: false,

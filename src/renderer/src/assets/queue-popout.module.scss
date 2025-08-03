@@ -1,12 +1,23 @@
 .queuePopout {
+    width: 100%;
+    min-width: 200px;
+    height: 100%;
+}
+
+.dummy {
+    height: 25px;
+    background-color: green;
+}
+
+.queuePopoutInner {
     color: white;
     padding: 16px;
+    padding-top: 41px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
     width: 100%;
     min-width: 200px;
-
-    height: 100%;
+    height: calc(100% - 25px);
 }
 
 .queueTitle {

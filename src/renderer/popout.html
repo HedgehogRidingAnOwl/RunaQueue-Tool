@@ -5,27 +5,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        html {
+        html,
+        body,
+        #popout-root {
             background: transparent !important;
             background-color: transparent !important;
             height: 100%;
+            -webkit-user-select: none;
+            user-select: none;
+            margin: 0;
         }
 
         body {
-            -webkit-user-select: none;
-            user-select: none;
             app-region: drag;
-            background: transparent !important;
-            background-color: transparent !important;
-            margin: 0;
             padding: 20px;
             font-family: Arial, sans-serif;
             color: white;
             overflow: hidden;
-            height: 100%;
-        }
-
-        #popout-root {
             height: 100%;
         }
     </style>
