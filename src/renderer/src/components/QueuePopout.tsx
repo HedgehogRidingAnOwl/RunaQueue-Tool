@@ -88,7 +88,6 @@ const QueuePopout: React.FC = () => {
                 backgroundColor: `rgba(0, 0, 0, 0)`,
             }}
         >
-            <div className={styles.dummy}></div>
             <div
                 className={styles.queuePopoutInner}
                 style={{
