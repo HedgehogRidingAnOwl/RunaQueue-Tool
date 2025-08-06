@@ -7,7 +7,6 @@
 .queuePopoutInner {
     color: white;
     padding: 16px;
-    padding-top: 41px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
     width: 100%;
@@ -18,7 +17,17 @@
 .queueTitle {
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.queueHint {
+    font-size: 18px;
+    text-align: center;
+}
+
+.queueLastHint {
+    font-size: 18px;
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     padding-bottom: 8px;

@@ -55,6 +55,7 @@ function createPopoutWindow(): void {
         transparent: true,
         frame: false,
         hasShadow: false,
+        alwaysOnTop: true,
         webPreferences: {
             preload: join(__dirname, "../preload/index.js"),
             sandbox: false,

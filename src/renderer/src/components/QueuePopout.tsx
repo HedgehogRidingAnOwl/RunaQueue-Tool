@@ -95,6 +95,8 @@ const QueuePopout: React.FC = () => {
                 }}
             >
                 <div className={styles.queueTitle}>Queue ({queueData.queue.length})</div>
+                <div className={styles.queueHint}>!join{queueData.settings.requireMessage ? " {username}" : ""} - to join</div>
+                <div className={styles.queueLastHint}>!leave - to leave</div>
                 {displayedQueue.length === 0 ? (
                     <div className={styles.emptyQueue}>{queueData.queue.length === 0 ? "Queue is empty" : "Popout window initialized"}</div>
                 ) : (
