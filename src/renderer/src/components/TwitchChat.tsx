@@ -193,14 +193,27 @@ const TwitchChat: React.FC = () => {
                 setMessages((prev) => [...prev, newMessage]);
             });
 
+            // Track connection state
+            let channelJoined = false;
+            let joinTimeout: NodeJS.Timeout | null = null;
+
             twitchClient.on("connected", async () => {
-                setIsConnected(true);
-                setErrorMessage(""); // Clear any previous errors on successful connection
-                if (botUsername && botUsername.trim() && accessToken && accessToken.trim()) {
-                    setConnectionStatus("Connected and authenticated (can send messages)");
-                } else {
-                    setConnectionStatus("Connected anonymously (read-only mode)");
-                }
+                console.log("Connected to Twitch IRC server");
+                setConnectionStatus("Connecting to channel...");
+                setErrorMessage("");
+
+                // Set a timeout to detect if channel join fails
+                joinTimeout = setTimeout(() => {
+                    if (!channelJoined) {
+                        console.log("Channel join timeout - channel may not exist");
+                        setIsConnected(false);
+                        setConnectionStatus("Failed to join channel");
+                        setErrorMessage("Failed to join channel. The channel may not exist or be unavailable.");
+                        setClient(null);
+                        setMessages([]);
+                        twitchClient.disconnect();
+                    }
+                }, 10000); // 10 second timeout
 
                 // Save credentials to config if saveCredentials is enabled
                 try {
@@ -218,7 +231,36 @@ const TwitchChat: React.FC = () => {
                 }
             });
 
+            // Listen for successful channel join
+            twitchClient.on("join", (channel, _username, self) => {
+                if (self) {
+                    // Only react to our own join
+                    console.log(`Successfully joined channel: ${channel}`);
+                    channelJoined = true;
+
+                    // Clear the join timeout
+                    if (joinTimeout) {
+                        clearTimeout(joinTimeout);
+                        joinTimeout = null;
+                    }
+
+                    setIsConnected(true);
+                    setErrorMessage("");
+                    if (botUsername && botUsername.trim() && accessToken && accessToken.trim()) {
+                        setConnectionStatus(`Connected to ${channel} and authenticated (can send messages)`);
+                    } else {
+                        setConnectionStatus(`Connected to ${channel} anonymously (read-only mode)`);
+                    }
+                }
+            });
+
             twitchClient.on("disconnected", () => {
+                // Clean up join timeout if it exists
+                if (joinTimeout) {
+                    clearTimeout(joinTimeout);
+                    joinTimeout = null;
+                }
+
                 setIsConnected(false);
                 setConnectionStatus("Disconnected");
                 setClient(null);
@@ -226,14 +268,38 @@ const TwitchChat: React.FC = () => {
             });
 
             // Add error handling
-            twitchClient.on("notice", (_, msgid) => {
+            twitchClient.on("notice", (channel, msgid, message) => {
+                console.log(`Notice received - Channel: ${channel}, MsgID: ${msgid}, Message: ${message}`);
+
+                // Clear join timeout if we get an error notice
+                if (joinTimeout) {
+                    clearTimeout(joinTimeout);
+                    joinTimeout = null;
+                }
+
                 if (msgid === "msg_channel_suspended") {
                     setErrorMessage("Channel is suspended");
                     setConnectionStatus("Disconnected - Channel suspended");
+                    setIsConnected(false);
                 } else if (msgid === "no_permission") {
                     setErrorMessage("No permission to access this channel");
                     setConnectionStatus("Disconnected - No permission");
+                    setIsConnected(false);
+                } else if (msgid === "msg_banned") {
+                    setErrorMessage("You are banned from this channel");
+                    setConnectionStatus("Disconnected - Banned");
+                    setIsConnected(false);
+                } else if (message && message.toLowerCase().includes("no such channel")) {
+                    setErrorMessage("Channel not found or does not exist");
+                    setConnectionStatus("Disconnected - Channel not found");
+                    setIsConnected(false);
                 }
+            });
+
+            // Handle connection errors
+            twitchClient.on("reconnect", () => {
+                console.log("Attempting to reconnect...");
+                setConnectionStatus("Reconnecting...");
             });
 
             console.log("Twitch connect attempt");
