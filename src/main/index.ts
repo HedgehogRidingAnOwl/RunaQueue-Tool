@@ -56,6 +56,7 @@ function createPopoutWindow(): void {
         frame: false,
         hasShadow: false,
         alwaysOnTop: true,
+        show: false,
         webPreferences: {
             preload: join(__dirname, "../preload/index.js"),
             sandbox: false,
@@ -69,9 +70,13 @@ function createPopoutWindow(): void {
         popoutWindow = null;
     });
 
-    popoutWindow.on("ready-to-show", () => {
-        console.log("Popout window ready to show");
+    popoutWindow.webContents.on("did-finish-load", () => {
+        console.log("Popout window finished loading");
         popoutWindow?.show();
+    });
+
+    popoutWindow.webContents.on("did-fail-load", (_, errorCode, errorDescription) => {
+        console.error("Popout window failed to load:", errorCode, errorDescription);
     });
 
     // Load the popout HTML file
@@ -80,9 +85,35 @@ function createPopoutWindow(): void {
         console.log("Loading popout URL (dev):", popoutUrl);
         popoutWindow.loadURL(popoutUrl);
     } else {
-        const popoutPath = join(__dirname, "../renderer/popout.html");
-        console.log("Loading popout file (prod):", popoutPath);
-        popoutWindow.loadFile(popoutPath);
+        // Try multiple possible locations for the popout file
+        const possiblePaths = [
+            join(__dirname, "../renderer/popout.html"),
+            join(__dirname, "../dist/popout.html"),
+            join(__dirname, "popout.html"),
+        ];
+
+        console.log("__dirname:", __dirname);
+        console.log("Possible popout paths:", possiblePaths);
+
+        const tryLoadPath = async (pathIndex: number): Promise<void> => {
+            if (pathIndex >= possiblePaths.length) {
+                console.error("Failed to load popout from any location, showing window anyway");
+                popoutWindow?.show();
+                return;
+            }
+
+            const path = possiblePaths[pathIndex];
+            try {
+                console.log("Trying to load:", path);
+                await popoutWindow?.loadFile(path);
+                console.log("Successfully loaded popout from:", path);
+            } catch (error) {
+                console.log("Failed to load from:", path, (error as Error).message);
+                await tryLoadPath(pathIndex + 1);
+            }
+        };
+
+        tryLoadPath(0);
     }
 }
 
