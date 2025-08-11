@@ -45,7 +45,7 @@ const TwitchLogin: React.FC<TwitchLoginProps> = ({
                         type="text"
                         value={botUsername}
                         onChange={(e) => onBotUsernameChange(e.target.value)}
-                        placeholder="Your Bot's Username"
+                        placeholder="Bot's Username"
                         disabled={isConnected}
                     />
                 </div>
@@ -57,7 +57,7 @@ const TwitchLogin: React.FC<TwitchLoginProps> = ({
                         type="password"
                         value={accessToken}
                         onChange={(e) => onAccessTokenChange(e.target.value)}
-                        placeholder="Your Twitch Access Token"
+                        placeholder="Bot's Twitch Access Token"
                         disabled={isConnected}
                     />
                 </div>
@@ -69,7 +69,7 @@ const TwitchLogin: React.FC<TwitchLoginProps> = ({
                         type="text"
                         value={channel}
                         onChange={(e) => onChannelChange(e.target.value)}
-                        placeholder="Enter channel name (without #)"
+                        placeholder="Channel name (without #)"
                         disabled={isConnected}
                     />
                 </div>
