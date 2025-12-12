@@ -383,7 +383,7 @@ const QueueManagement: React.FC<QueueManagementProps> = ({
                                 <div className={styles.position}>#{index + 1}</div>
                                 <div className={styles.userInfo}>
                                     <div className={styles.username}>{entry.username}</div>
-                                    {entry.message && <div className={styles.message}>&quot;{entry.message}&quot;</div>}
+                                    {entry.message && <div className={styles.message} title={entry.message}>&quot;{entry.message}&quot;</div>}
                                     <div className={styles.timeInfo}>
                                         <span>In queue: {formatTime(entry.joinedAt)}</span>
                                         {entry.isPlaying && entry.playingStartedAt && <span>Playing: {formatTime(entry.playingStartedAt)}</span>}
