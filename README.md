@@ -1,4 +1,4 @@
-# RunaQueue v0.1
+# RunaQueue v1.1.0
 
 ## About
 
