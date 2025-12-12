@@ -14,6 +14,13 @@
     margin-bottom: 10px;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
     h3 {
         margin: 0;
@@ -26,6 +33,13 @@
     gap: 20px;
     font-size: 14px;
     color: black;
+    flex-wrap: wrap;
+
+    @media (max-width: 600px) {
+        gap: 10px;
+        flex-direction: column;
+        width: 100%;
+    }
 
     span {
         padding: 4px 8px;
@@ -52,17 +66,38 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+
+    @media (max-width: 600px) {
+        gap: 10px;
+    }
 }
 
 .buttonGroup {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
+
+    button {
+        @media (max-width: 600px) {
+            flex: 1;
+            min-width: auto;
+        }
+    }
 }
 
 .quickSetting {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
+
+    @media (max-width: 600px) {
+        flex: 1 1 48%;
+    }
 
     input[type="checkbox"] {
         margin: 0;
@@ -257,6 +292,11 @@
     cursor: move;
     transition: all 0.2s;
 
+    @media (max-width: 600px) {
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
     &:hover {
         background: #e9ecef;
         border-color: #9146ff;
@@ -299,6 +339,10 @@
     color: #333;
     font-size: 16px;
     margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 
 .message {
@@ -325,6 +369,12 @@
     display: flex;
     gap: 8px;
     flex-shrink: 0;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        width: 100%;
+        gap: 5px;
+    }
 }
 
 .copyBtn,
@@ -338,6 +388,13 @@
     font-size: 12px;
     font-weight: bold;
     transition: background-color 0.3s;
+    white-space: nowrap;
+
+    @media (max-width: 600px) {
+        flex: 1;
+        padding: 8px 10px;
+        font-size: 11px;
+    }
 }
 
 .copyBtn {
