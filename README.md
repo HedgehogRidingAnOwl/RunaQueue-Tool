@@ -109,14 +109,6 @@ Settings that only apply to the popout window.
 - **Show wait times**: Displays the time the viewer has been in the queue
 - **Background Opacity**: Adjusts the transparency of the popout window's background
 
-## Other Notes
-
-### Chat Messages Window
-
-The chat messages window shows messages as they appear in the stream chat and has no other functionality. The "Clear Messages" button only clears the window in the RunaQueue tool and has no affect on twitch's stream chat.
-
-![Chat Messages](/resources/Chat_Messages.png)
-
 ## Project Setup
 
 **NOTE:** Most users can ignore this section.
