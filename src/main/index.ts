@@ -49,7 +49,7 @@ function createPopoutWindow(): void {
     }
 
     popoutWindow = new BrowserWindow({
-        width: 400,
+        width: 300,
         height: 600,
         autoHideMenuBar: true,
         transparent: true,
@@ -141,7 +141,7 @@ app.whenReady().then(() => {
                                 enabled: false,
                                 displayCount: 5,
                                 showPosition: true,
-                                showMessage: true,
+                                showMessage: false,
                                 showWaitTime: false,
                             },
                         },

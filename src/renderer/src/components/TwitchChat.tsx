@@ -4,24 +4,22 @@ import styles from "../assets/twitch-chat.module.scss";
 import QueueManagement from "./QueueManagement";
 import TwitchInstructions from "./TwitchInstructions";
 import TwitchLogin from "./TwitchLogin";
-import TwitchChatMessages from "./TwitchChatMessages";
 import { useQueue } from "../hooks/useQueue";
 import { QueueCommand, QueueSettings } from "../types/queue";
 import { configService } from "../services/configService";
 
-interface ChatMessage {
+/* interface ChatMessage {
     id: string;
     username: string;
     message: string;
     timestamp: Date;
-}
+} */
 
 const TwitchChat: React.FC = () => {
     const [botUsername, setBotUsername] = useState("");
     const [accessToken, setAccessToken] = useState("");
     const [channel, setChannel] = useState("");
     const [isConnected, setIsConnected] = useState(false);
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [client, setClient] = useState<tmi.Client | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<string>("Disconnected");
     const [saveCredentials, setSaveCredentials] = useState(true);
@@ -182,15 +180,14 @@ const TwitchChat: React.FC = () => {
                         }
                     }
                 }
-
-                const newMessage: ChatMessage = {
+                /* const newMessage: ChatMessage = {
                     id: tags.id || Math.random().toString(36),
                     username,
                     message: message || "[Empty Message]",
                     timestamp: new Date(),
-                };
+                }; */
 
-                setMessages((prev) => [...prev, newMessage]);
+                // Message received - no longer displaying in UI
             });
 
             // Track connection state
@@ -210,7 +207,6 @@ const TwitchChat: React.FC = () => {
                         setConnectionStatus("Failed to join channel");
                         setErrorMessage("Failed to join channel. The channel may not exist or be unavailable.");
                         setClient(null);
-                        setMessages([]);
                         twitchClient.disconnect();
                     }
                 }, 10000); // 10 second timeout
@@ -264,7 +260,6 @@ const TwitchChat: React.FC = () => {
                 setIsConnected(false);
                 setConnectionStatus("Disconnected");
                 setClient(null);
-                setMessages([]);
             });
 
             // Add error handling
@@ -312,7 +307,6 @@ const TwitchChat: React.FC = () => {
             setIsConnected(false);
             setConnectionStatus("Disconnected");
             setClient(null);
-            setMessages([]);
 
             // Convert error to string for consistent handling
             const errorMessage = error instanceof Error ? error.message : String(error);
@@ -338,10 +332,6 @@ const TwitchChat: React.FC = () => {
             console.log("Disconnect from twitch");
             await client.disconnect();
         }
-    };
-
-    const clearMessages = (): void => {
-        setMessages([]);
     };
 
     const handleSaveCredentialsChange = async (enabled: boolean): Promise<void> => {
@@ -382,8 +372,6 @@ const TwitchChat: React.FC = () => {
                 onSaveCredentialsChange={handleSaveCredentialsChange}
                 onClearError={() => setErrorMessage("")}
             />
-
-            <TwitchChatMessages messages={messages} onClearMessages={clearMessages} />
 
             <QueueManagement
                 queue={queue}

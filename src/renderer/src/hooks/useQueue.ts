@@ -17,7 +17,7 @@ const DEFAULT_SETTINGS: QueueSettings = {
         enabled: false,
         displayCount: 5,
         showPosition: true,
-        showMessage: true,
+        showMessage: false,
         showWaitTime: false,
         backgroundOpacity: 0.7,
     },
