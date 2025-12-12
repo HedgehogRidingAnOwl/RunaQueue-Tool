@@ -380,6 +380,7 @@
 .copyBtn,
 .playBtn,
 .stopBtn,
+.moveBtn,
 .removeBtn {
     padding: 6px 12px;
     border: none;
@@ -421,6 +422,15 @@
 
     &:hover {
         background-color: #e0a800;
+    }
+}
+
+.moveBtn {
+    background-color: #17a2b8;
+    color: white;
+
+    &:hover {
+        background-color: #138496;
     }
 }
 

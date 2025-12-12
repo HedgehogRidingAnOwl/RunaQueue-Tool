@@ -35,6 +35,7 @@ export const useQueue = (
     markAsPlaying: (username: string) => void;
     markAsNotPlaying: (username: string) => void;
     removeUser: (username: string) => void;
+    moveToBottom: (username: string) => void;
     clearQueue: () => void;
     updateSettings: (newSettings: Partial<QueueSettings>) => void;
 } => {
@@ -182,6 +183,17 @@ export const useQueue = (
         setQueue((prev) => prev.filter((entry) => entry.username.toLowerCase() !== username.toLowerCase()));
     }, []);
 
+    const moveToBottom = useCallback((username: string) => {
+        setQueue((prev) => {
+            const userIndex = prev.findIndex((entry) => entry.username.toLowerCase() === username.toLowerCase());
+            if (userIndex < 0 || userIndex === prev.length - 1) return prev; // User not found or already at bottom
+            const newQueue = [...prev];
+            const [movedItem] = newQueue.splice(userIndex, 1);
+            newQueue.push(movedItem);
+            return newQueue;
+        });
+    }, []);
+
     const clearQueue = useCallback(() => {
         setQueue([]);
     }, []);
@@ -198,6 +210,7 @@ export const useQueue = (
         markAsPlaying,
         markAsNotPlaying,
         removeUser,
+        moveToBottom,
         clearQueue,
         updateSettings,
     };

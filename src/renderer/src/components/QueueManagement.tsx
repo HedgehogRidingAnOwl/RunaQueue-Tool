@@ -10,6 +10,7 @@ interface QueueManagementProps {
     onMarkAsPlaying: (username: string) => void;
     onMarkAsNotPlaying: (username: string) => void;
     onRemoveUser: (username: string) => void;
+    onMoveToBottom: (username: string) => void;
     onClearQueue: () => void;
     onUpdateSettings: (settings: Partial<QueueSettings>) => void;
 }
@@ -21,6 +22,7 @@ const QueueManagement: React.FC<QueueManagementProps> = ({
     onMarkAsPlaying,
     onMarkAsNotPlaying,
     onRemoveUser,
+    onMoveToBottom,
     onClearQueue,
     onUpdateSettings,
 }) => {
@@ -418,6 +420,15 @@ const QueueManagement: React.FC<QueueManagementProps> = ({
                                             Stop Playing
                                         </button>
                                     )}
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onMoveToBottom(entry.username);
+                                        }}
+                                        className={styles.moveBtn}
+                                    >
+                                        Move Down
+                                    </button>
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();

@@ -27,7 +27,7 @@ const TwitchChat: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     // Queue management
-    const { queue, settings, processCommand, moveUser, markAsPlaying, markAsNotPlaying, removeUser, clearQueue, updateSettings } =
+    const { queue, settings, processCommand, moveUser, markAsPlaying, markAsNotPlaying, removeUser, moveToBottom, clearQueue, updateSettings } =
         useQueue(queueSettings);
 
     // Use ref to ensure message handler always has the latest processCommand
@@ -380,6 +380,7 @@ const TwitchChat: React.FC = () => {
                 onMarkAsPlaying={markAsPlaying}
                 onMarkAsNotPlaying={markAsNotPlaying}
                 onRemoveUser={removeUser}
+                onMoveToBottom={moveToBottom}
                 onClearQueue={clearQueue}
                 onUpdateSettings={handleQueueSettingsUpdate}
             />
